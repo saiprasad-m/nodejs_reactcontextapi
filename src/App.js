@@ -13,7 +13,13 @@ class FirstProvider extends Component {
   render() {
     return(
       <FirstContext.Provider value={{
-        state: this.state
+        state: this.state,
+        incrementProjects: () => this.setState({
+          projects: this.state.projects +1
+        }),
+        decrementProjects: () => this.setState({
+          projects: this.state.projects -1
+        })
       }}>
         {this.props.children}
       </FirstContext.Provider>
@@ -39,7 +45,10 @@ class Person extends Component {
 
               <p>Name: {context.state.name}</p>
               <p>Projects completed: {context.state.projects}</p>
-              <p>Coolness Coeffecient: {context.state.cool}</p>
+              <p>Coolness Coeffecient: {context.state.cool}</p> <hr/>
+              <button onClick={context.incrementProjects} className="sm">+</button>
+              <button onClick={context.decrementProjects} className="sm">-</button>
+              
               </React.Fragment>
             )
           }
