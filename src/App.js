@@ -2,9 +2,28 @@ import React, { Component } from 'react';
 
 import './App.css';
 
+const FirstContext = React.createContext();
+
+class FirstProvider extends Component {
+  state = {
+    name: 'Sai',
+    projects: 40,
+    cool: 'Awesome'
+  }
+  render() {
+    return(
+      <FirstContext.Provider value={{
+        state: this.state
+      }}>
+        {this.props.children}
+      </FirstContext.Provider>
+    )
+  }
+}
+
 const Family = (props) => (
   <div className="family">
-    <Person name={props.name}/>
+    <Person/>
   </div>
 )
 
@@ -13,26 +32,35 @@ class Person extends Component {
   render() {
     return (
       <div className="person">
-        I am an awesome person {this.props.name}.
+        <FirstContext.Consumer>
+          {
+            (context) => (
+              <React.Fragment>
+
+              <p>Name: {context.state.name}</p>
+              <p>Projects completed: {context.state.projects}</p>
+              <p>Coolness Coeffecient: {context.state.cool}</p>
+              </React.Fragment>
+            )
+          }
+        </FirstContext.Consumer>
       </div>
     )
   }
 }
 
 class App extends Component {
-  state = {
-    name: 'Sai',
-    age: 40,
-    cool: 'Awesome'
-  }
+
   render() {
     return (
+      <FirstProvider>
       <div className="App">
         <div class="container card card-body">
           This is an React 16.7 App for React Context API
         </div>
-        <Family name={this.state.name}/>
+        <Family/>
       </div>
+      </FirstProvider>
     );
   }
 }
